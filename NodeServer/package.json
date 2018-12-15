@@ -1,0 +1,23 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node node_modules/nodemon/bin/nodemon.js src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.8"
+  },
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
