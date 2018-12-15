@@ -16,6 +16,9 @@ npm run build
 ```
 
 # Crear servidor de Node
-Ir a /NodeServer
-npm install
-npm run start
+
+``` bash
+# Ir al directorio /NodeServer
+# npm install
+# npm run start
+```
