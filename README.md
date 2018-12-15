@@ -22,3 +22,4 @@ npm run build
 # npm install
 # npm run start
 ```
+Gracias a [Aneeta Sharma](https://medium.com/@anaida07/mevn-stack-application-part-1-3a27b61dcae0)
