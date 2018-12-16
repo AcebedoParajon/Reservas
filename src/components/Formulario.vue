@@ -68,7 +68,7 @@ export default {
         f_salida: this.f_salida,
         personas: this.personas
       })
-      this.$router.push({ name: 'Posts' })
+      this.$router.push({ name: 'Posts' });
     }
   }
 };
