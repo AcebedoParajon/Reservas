@@ -1,8 +1,10 @@
 <template>
   <div class="container">
     <h1 class="center-align">Reservas</h1>
-    <router-link to='/' class="btn">Acceder al formulario de reservas</router-link>
-    <router-link to='api' class="btn">Acceder al listado de reservas</router-link>
+    <div class="center-align">
+      <router-link to='/' class="btn">Acceder al formulario de reservas</router-link>
+      <router-link to='api' class="btn">Acceder al listado de reservas</router-link>
+    </div>
     <hr>
       <div class="row">
         <!-- <formulario></formulario>

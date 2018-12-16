@@ -12,8 +12,8 @@ var dateFormat = function(data){
                     data[i].f_entrada = entrada.getDate() + "/" + (entrada.getMonth() + 1) + "/" + entrada.getFullYear();
                     salida = data[i].f_salida;
                     data[i].f_salida = salida.getDate() + "/" + (salida.getMonth() + 1) + "/" + salida.getFullYear();
-                    return data;
                 }
+                return data;
             }
             return
         

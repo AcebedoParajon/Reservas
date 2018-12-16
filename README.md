@@ -5,7 +5,11 @@
 ## Build Setup
 
 ``` bash
-# instalar dependencias
+# Mysql
+Crear base de datos
+Arrancar mysql con Xampp Wamp o el que quieras
+
+# instalar dependencias en reservas
 npm install
 
 # servidor con hot reload para desarrollo en localhost:8080

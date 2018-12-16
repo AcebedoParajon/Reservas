@@ -9,5 +9,9 @@ import Api from '../services/Api'
 export default {
   fetchPosts () {
     return Api().get('posts')
+  },
+
+  addReservas (params) {
+    return Api().post('posts', params)
   }
 }

@@ -49,4 +49,31 @@ app.get('/posts',function (req, res) {
     });
 })
 
+
+app.post('/posts', (req, res) => {
+   var db = req.db;
+   var nombre = req.body.nombre;
+   var email = req.body.email;
+   var telefono = req.body.telefono;
+   var f_entrada = req.body.f_entrada;
+   var f_salida = req.body.f_salida;
+   var personas = req.body.personas;
+
+   var sql = 'INSERT INTO diasreserva(nombre, email, telefono, f_entrada, f_salida, personas) VALUES(?, ?, ?, ?, ?, ?)';
+
+   // Según documentación node-mysql es la forma segura de enviar datos
+   // https://github.com/mysqljs/mysql#preparing-queries
+   var inserts = [nombre, email, telefono, f_entrada, f_salida, personas];
+   sql = mysql.format(sql, inserts);
+   console.log(sql);
+   var query = connection.query(sql, function(error, result){
+      if(error){
+        console.log('Error! No se pudieron insertar los datos.');
+      }else{
+         console.log(result);
+      }
+    }
+   );
+ })
+
 app.listen(process.env.PORT || 8081)
