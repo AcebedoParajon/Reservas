@@ -18,6 +18,7 @@
 <script>
 import formulario from '../src/components/Formulario.vue'
 import listado from '../src/components/Listado.vue'
+
 export default {
   components:{formulario, listado},
   data () {

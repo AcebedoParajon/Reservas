@@ -42,9 +42,7 @@ app.get('/posts',function (req, res) {
             data = result;
             dateFormat(data);
             data = JSON.stringify(data);
-            res.send(data); // enviamos el json a localhost:8081/posts
-            console.log('Datos enviados....');       
-            
+            res.send(data); // enviamos el json a localhost:8081/posts      
          }
     });
 })
@@ -59,18 +57,21 @@ app.post('/posts', (req, res) => {
    var f_salida = req.body.f_salida;
    var personas = req.body.personas;
 
-   var sql = 'INSERT INTO diasreserva(nombre, email, telefono, f_entrada, f_salida, personas) VALUES(?, ?, ?, ?, ?, ?)';
-
+   // TODO comprobar que las reservas no está ocupadas.
+   
    // Según documentación node-mysql es la forma segura de enviar datos
    // https://github.com/mysqljs/mysql#preparing-queries
+   var sql = 'INSERT INTO diasreserva(nombre, email, telefono, f_entrada, f_salida, personas) VALUES(?, ?, ?, ?, ?, ?)';
    var inserts = [nombre, email, telefono, f_entrada, f_salida, personas];
    sql = mysql.format(sql, inserts);
-   console.log(sql);
    var query = connection.query(sql, function(error, result){
       if(error){
         console.log('Error! No se pudieron insertar los datos.');
       }else{
-         console.log(result);
+         res.send({
+            success: true,
+            message: 'Reserva enviada correctamente, en breve recivirá una confirmación.'
+         });
       }
     }
    );
