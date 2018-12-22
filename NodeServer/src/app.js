@@ -71,30 +71,34 @@ app.post('/posts/compruebareserva', function (req, res) {
             data = result;
             var fentrada = new Date(F_entrada);
             var fsalida = new Date(F_salida);
-            for(let i=0; i<data.length; i++){ 
+            for(let i=0; i<data.length; i++){
+               console.log('Dentro de for datosError: ',datosError); 
                var dbentrada = data[i].f_entrada;
                var dbsalida = data[i].f_salida;
                if (fentrada.getTime() <= dbsalida.getTime() && fentrada.getTime() >= dbentrada.getTime() || fsalida.getTime() >= dbentrada.getTime() && fsalida.getTime() <= dbsalida.getTime() ){
                   console.log('Fechas ya reservadas...');
                   datosError = {success:'Error!!!', message:'La fecha ya está reservada...'};
+                  break;
                }else{
                   errorcon = false;
                   datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
                }
-               const path = '../src/services/logError.json';
-               fs.open(path, 'w', function(err, fd){
-                  if (err){
-                        throw 'No se puede abrir el archivo '+path+err;
-                  }
                
-                  fs.writeFile(path, JSON.stringify(datosError), (err) => {
-                     if (err) throw err;
-                     fs.close(fd, function() {
-                        console.log('wrote the file successfully');
-                     });
+            }
+            console.log('Fuera de for datosError: ',datosError);
+            const path = '../src/services/logError.json';
+            fs.open(path, 'w', function(err, fd){
+               if (err){
+                     throw 'No se puede abrir el archivo '+path+err;
+               }
+            
+               fs.writeFile(path, JSON.stringify(datosError), (err) => {
+                  if (err) throw err;
+                  fs.close(fd, function() {
+                     console.log('wrote the file successfully');
                   });
                });
-            }  
+            });
             res.send({success: true});
          }
       });
