@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="center-align">
-          <button type="submit" class="btn btn-primary btn-large" @click="compruebaReserva">Enviar</button>
+          <button type="submit" class="btn btn-primary btn-large" @click="compruebaDatos">Enviar</button>
         </div>
       </div>
       <vue-up></vue-up>
@@ -59,6 +59,7 @@
 </template>
 <script>
 import babelPolyfill from "babel-polyfill";
+import axios from "axios";
 import PostsService from "../services/PostsService";
 import compruebaCampos from "../assets/js/compruebaCampos";
 import modal from "./modal.vue";
@@ -78,6 +79,7 @@ export default {
       aviso: false,
       cabecera:'',
       contenido:'',
+      respuesta: [],
       error: null
     };
   },
@@ -86,24 +88,55 @@ export default {
     cerrarAviso(){
       this.aviso = false;
     },
+
     notify () {
       this.$popup({ message: 'Enviando datos...', delay: 10 })
     },
-    compruebaReserva() {
+
+    // Muestra mensajes al cliente, los datos del error o del éxito que están en logError.json
+    mensaje(){
+      axios.get('./src/services/logError.json')
+      .then(response => {
+        this.contenido = response.data.message
+        this.cabecera = response.data.success
+        this.aviso = true
+        // Si el success de logError.json es false, es que no existió error y continuamos con la reserva
+        if (this.cabecera === 'Enviando reserva'){
+          this.addReserva()
+        }
+      }).catch(e => console.log(e))
+    },
+
+
+    // Comprobamos que los campos a enviar son válidos
+    compruebaDatos() {
       var datos = []
       datos.push(this.nombre,this.email,this.telefono,this.f_entrada,this.f_salida,this.personas)
       this.notify()
       this.error = compruebaCampos(datos)
-      console.log(this.error)
+      // Si existe error en la comprobación de los campos mostramos mensaje de error
       if (this.error){
         this.cabecera = 'Error!!!';
         this.contenido = this.error;
         this.aviso = true;
         return;
       }else{
-        this.addReserva()
+        // Si los campos son válidos ejecutamos la función que comprueba las fechas de la reserva
+        this.compruebaReserva()
       }
     },
+
+    // Comprobamos si la fecha ya está reservada
+    async compruebaReserva(){
+      const response = await PostsService.compruebaReservas({
+        f_entrada: this.f_entrada,
+        f_salida:  this.f_salida
+      })
+      // Mostramos mensaje tanto del error (si existió) como del éxito
+      this.mensaje()
+    },
+
+    // Enviamos los datos via post sólo si pasa todos los filtros de errores
     async addReserva () {
       await PostsService.addReservas({
         nombre: this.nombre,
@@ -113,13 +146,18 @@ export default {
         f_salida: this.f_salida,
         personas: this.personas
       });
+    
       this.nombre = '';
       this.email = '';
       this.telefono = '';
       this.f_entrada = '';
       this.f_salida = '';
       this.personas = '';
-      this.$router.push({ name: 'Listado' });
+      setTimeout(this.iraPagina,2000)
+    },
+
+    iraPagina() {
+      this.$router.push({ name:'Listado' })
     }
   }
 };

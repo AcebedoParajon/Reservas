@@ -3,9 +3,11 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const mysql = require('mysql')
+const fs = require('fs')
 const dateFormat = require('./dateFormat')
 
 const app = express()
+
 
 const mysqlparams= {
    host: 'localhost',
@@ -20,6 +22,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 var connection = mysql.createConnection(mysqlparams);
+exports.connection = connection;
 
 var conectar = function() {
    connection.connect(function(err){
@@ -32,6 +35,11 @@ var conectar = function() {
    });
 }
 
+var errorcon = false;
+var errores = false;
+var datosError = {};
+
+// Ejecutada desde Listado para recoger los datos de la base de datos
 app.get('/posts',function (req, res) {
     var data = []
     
@@ -47,8 +55,58 @@ app.get('/posts',function (req, res) {
     });
 })
 
+// Ejecutada desde Formulario para comprobar si la fecha está reservada
+app.post('/posts/compruebareserva', function (req, res) {
 
-app.post('/posts', (req, res) => {
+   var F_entrada = req.body.f_entrada;
+   var F_salida = req.body.f_salida;
+
+   // TODO comprobar que las reservas no está ocupadas.
+   async function compruebaReservas(){
+      connection.query('SELECT f_entrada, f_salida FROM diasreserva', await function(err, result){
+         if(err){
+            console.log('Error! Conexión mysql ',err);
+            //throw err;   
+         }else{
+            data = result;
+            var fentrada = new Date(F_entrada);
+            var fsalida = new Date(F_salida);
+            for(let i=0; i<data.length; i++){ 
+               var dbentrada = data[i].f_entrada;
+               var dbsalida = data[i].f_salida;
+               if (fentrada.getTime() <= dbsalida.getTime() && fentrada.getTime() >= dbentrada.getTime() || fsalida.getTime() >= dbentrada.getTime() && fsalida.getTime() <= dbsalida.getTime() ){
+                  console.log('Fechas ya reservadas...');
+                  datosError = {success:'Error!!!', message:'La fecha ya está reservada...'};
+               }else{
+                  errorcon = false;
+                  datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
+               }
+               const path = '../src/services/logError.json';
+               fs.open(path, 'w', function(err, fd){
+                  if (err){
+                        throw 'No se puede abrir el archivo '+path+err;
+                  }
+               
+                  fs.writeFile(path, JSON.stringify(datosError), (err) => {
+                     if (err) throw err;
+                     fs.close(fd, function() {
+                        console.log('wrote the file successfully');
+                     });
+                  });
+               });
+            }  
+            res.send({success: true});
+         }
+      });
+   }
+
+   compruebaReservas();
+
+   
+})
+
+// Ejecutada desde Formulario para enviar la nueva reserva a la base de datos
+app.post('/posts', function(req, res){
    var db = req.db;
    var nombre = req.body.nombre;
    var email = req.body.email;
@@ -57,8 +115,6 @@ app.post('/posts', (req, res) => {
    var f_salida = req.body.f_salida;
    var personas = req.body.personas;
 
-   // TODO comprobar que las reservas no está ocupadas.
-   
    // Según documentación node-mysql es la forma segura de enviar datos
    // https://github.com/mysqljs/mysql#preparing-queries
    var sql = 'INSERT INTO diasreserva(nombre, email, telefono, f_entrada, f_salida, personas) VALUES(?, ?, ?, ?, ?, ?)';
@@ -66,15 +122,28 @@ app.post('/posts', (req, res) => {
    sql = mysql.format(sql, inserts);
    var query = connection.query(sql, function(error, result){
       if(error){
-        console.log('Error! No se pudieron insertar los datos.');
+         datosError = {success: 'Error!!!', message: 'No se pudieron enviar los datos, inténtelo de nuevo.'}
       }else{
-         res.send({
-            success: true,
-            message: 'Reserva enviada correctamente, en breve recivirá una confirmación.'
-         });
+         //errores = true;
+         datosError = {success: 'Exito!!!', message: 'Reserva enviada, en breve recibirá una respuesta.'}
       }
-    }
-   );
- })
+      const path = '../src/services/logError.json';
+      fs.open(path, 'w', function(err, fd){
+         if (err){
+               throw 'No se puede abrir el archivo '+path+err;
+         }
+      
+         fs.writeFile(path, JSON.stringify(datosError), (err) => {
+            if (err) throw 'El archivo se ha abierto pero no se pudo escribir...'+err;
+            fs.close(fd, function() {
+               console.log('Se ha escrito en el archivo con éxito.');
+               res.send({success: true});
+            });
+         });
+      });
+   })
+         
+})
+
 
 app.listen(process.env.PORT || 8081)
