@@ -1,6 +1,9 @@
 # reservas
 
-> Proyecto reservas con VueJs, Express, NodeJs y Mysql
+> Proyecto reservas con VueJs, Express, NodeJs y Mysql.
+> Un MEVN PERO CON Mysql en lugar de Mongodb.
+> Formulario para realizar reserva de fechas y su comprobación y envío a la base de datos.
+> La aplicación primero comprueba que todos los campos a enviar son correctos y, de ser así, después comprueba que las fechas no están ya reservadas. En el caso de que todo sea correcto guarda los datos en la base de datos.
 
 ## Build Setup
 
