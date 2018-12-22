@@ -36,5 +36,5 @@ npm run start
 
 ### En producción en servidor fuera de localhost
 
-Cambiar en el archivo Api.js el parámetro baseURL
+Cambiar en el archivo Api.js el parámetro baseURL<br>
 Gracias a [Aneeta Sharma](https://medium.com/@anaida07/mevn-stack-application-part-1-3a27b61dcae0)
