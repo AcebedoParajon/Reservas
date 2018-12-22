@@ -35,8 +35,6 @@ var conectar = function() {
    });
 }
 
-var errorcon = false;
-var errores = false;
 var datosError = {};
 
 // Ejecutada desde Listado para recoger los datos de la base de datos
@@ -72,7 +70,6 @@ app.post('/posts/compruebareserva', function (req, res) {
             var fentrada = new Date(F_entrada);
             var fsalida = new Date(F_salida);
             for(let i=0; i<data.length; i++){
-               console.log('Dentro de for datosError: ',datosError); 
                var dbentrada = data[i].f_entrada;
                var dbsalida = data[i].f_salida;
                if (fentrada.getTime() <= dbsalida.getTime() && fentrada.getTime() >= dbentrada.getTime() || fsalida.getTime() >= dbentrada.getTime() && fsalida.getTime() <= dbsalida.getTime() ){
@@ -82,10 +79,8 @@ app.post('/posts/compruebareserva', function (req, res) {
                }else{
                   errorcon = false;
                   datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
-               }
-               
+               }  
             }
-            console.log('Fuera de for datosError: ',datosError);
             const path = '../src/services/logError.json';
             fs.open(path, 'w', function(err, fd){
                if (err){
@@ -111,7 +106,6 @@ app.post('/posts/compruebareserva', function (req, res) {
 
 // Ejecutada desde Formulario para enviar la nueva reserva a la base de datos
 app.post('/posts', function(req, res){
-   var db = req.db;
    var nombre = req.body.nombre;
    var email = req.body.email;
    var telefono = req.body.telefono;
