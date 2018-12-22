@@ -1,13 +1,13 @@
 <template>
 <div>
   <div class="col m12" v-if="aviso">
-    <div class="card blue-grey darken-1">
+    <div class="card-panel" :class="{'red lighten-4':estiloError!=true, 'red lighten-1':estiloError}">
         <div class="card-content white-text">
           <span class="card-title">{{ cabecera }}</span>
           <p>{{ contenido }}</p>
         </div>
         <div class="card-action">
-          <a @click="cerrarAviso" class="btn">Cerrar</a>
+          <a @click="cerrarAviso" class="btn red accent-1">Cerrar</a>
         </div>
       </div>
   </div>
@@ -80,6 +80,7 @@ export default {
       cabecera:'',
       contenido:'',
       respuesta: [],
+      estiloError:null,
       error: null
     };
   },
@@ -99,6 +100,7 @@ export default {
       .then(response => {
         this.contenido = response.data.message
         this.cabecera = response.data.success
+        if (this.cabecera != 'Enviando reserva') this.estiloError = true;
         this.aviso = true
         // Si el success de logError.json es false, es que no existió error y continuamos con la reserva
         if (this.cabecera === 'Enviando reserva'){
@@ -116,7 +118,8 @@ export default {
       this.error = compruebaCampos(datos)
       // Si existe error en la comprobación de los campos mostramos mensaje de error
       if (this.error){
-        this.cabecera = 'Error!!!';
+        this.estiloError = true
+        this.cabecera = 'ERROR!!!';
         this.contenido = this.error;
         this.aviso = true;
         return;
