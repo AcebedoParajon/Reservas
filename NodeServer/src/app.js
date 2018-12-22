@@ -69,17 +69,22 @@ app.post('/posts/compruebareserva', function (req, res) {
             data = result;
             var fentrada = new Date(F_entrada);
             var fsalida = new Date(F_salida);
-            for(let i=0; i<data.length; i++){
-               var dbentrada = data[i].f_entrada;
-               var dbsalida = data[i].f_salida;
-               if (fentrada.getTime() <= dbsalida.getTime() && fentrada.getTime() >= dbentrada.getTime() || fsalida.getTime() >= dbentrada.getTime() && fsalida.getTime() <= dbsalida.getTime() ){
-                  console.log('Fechas ya reservadas...');
-                  datosError = {success:'Error!!!', message:'La fecha ya está reservada...'};
-                  break;
-               }else{
-                  errorcon = false;
-                  datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
-               }  
+            // Si la base de datos no está vacía comprobamos las reservas
+            if (data.length > 0){
+               for(let i=0; i<data.length; i++){
+                  var dbentrada = data[i].f_entrada;
+                  var dbsalida = data[i].f_salida;
+                  if (fentrada.getTime() <= dbsalida.getTime() && fentrada.getTime() >= dbentrada.getTime() || fsalida.getTime() >= dbentrada.getTime() && fsalida.getTime() <= dbsalida.getTime() ){
+                     console.log('Fechas ya reservadas...');
+                     datosError = {success:'Error!!!', message:'La fecha ya está reservada...'};
+                     break;
+                  }else{
+                     errorcon = false;
+                     datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
+                  }  
+               }
+            }else{
+               datosError = {success: 'Enviando reserva', message: 'Enviando datos....'}
             }
             const path = '../src/services/logError.json';
             fs.open(path, 'w', function(err, fd){
