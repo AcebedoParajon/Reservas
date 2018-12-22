@@ -36,5 +36,8 @@ npm run start
 
 ### En producción en servidor fuera de localhost
 
-Cambiar en el archivo Api.js el parámetro baseURL<br>
+ - Cambiar en el archivo Api.js el parámetro baseURL<br>
+ - Se está usando Vue en modo desarrollo, cambiar Vue a [modo producción](https://vuejs.org/v2/guide/deployment.html)<br>
+ <br>
+
 Gracias a [Aneeta Sharma](https://medium.com/@anaida07/mevn-stack-application-part-1-3a27b61dcae0)
