@@ -20,10 +20,6 @@
 export default {
   props: ["estiloError", "cabecera", "contenido"],
 
-  beforeUpdate(){
-        return this.mostrar = this.aviso
-  },
-  
   methods: {
     cerrarAviso() {
       this.$emit('cerrarMensaje')
