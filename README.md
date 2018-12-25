@@ -8,6 +8,15 @@
 > - Expresiones regulares para comprobar la valided de los campos.
 > - En VueJs con single components, estilos css dinámicos, bucles v-for para listar las reservas, axios.
 > - Con file system (fs) para la apertura y escritura de ficheros (logError.json) para mostrar mensajes al usuario.
+> - Separamos la ventana que da avisos al usuario en un componente aparte ya que cuando la aplicación crezca será usado en otros componentes.
+>     - Para cerrar esta ventana utilizamos la emisión de eventos personalizados con `this.$emit('cerrarMensaje')` y así poder comunicarnos de componente hijo a componente padre.
+>     - En el componente hijo, el botón de cerrar quedaría así:
+>     - - `<a @click="cerrarAviso" class="la clase que quieras">Cerrar</a>` para lanzar la función `cerrarAviso` que es dónde está `this.$emit`
+>     - En el componente padre incluimos el hijo así:
+>     - - `<mensaje @cerrarMensaje="aviso = false" v-show="aviso" :propiedad="contenido" :otraPropiedad="cabecera"></mensaje>`
+>     - Así al pinchar en el botón de cerrar emite el evento `cerrarMensaje` que cambia el valor de la variable `aviso` que es la mantiene la ventana abierta o cerrada.
+
+
 
 ## Build Setup
 
