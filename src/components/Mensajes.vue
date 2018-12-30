@@ -3,7 +3,7 @@
     <div class="col m12">
       <div
         class="card-panel"
-        :class="{'grey lighten-4':estiloError!=true, 'red lighten-1':estiloError}"
+        :class="{'blue lighten-1':estiloError!=true, 'red lighten-1':estiloError}"
       >
         <div class="card-content white-text">
           <span class="card-title">{{ cabecera }}</span>

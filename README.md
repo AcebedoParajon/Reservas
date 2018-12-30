@@ -15,6 +15,8 @@
 >     - En el componente padre incluimos el hijo así:
 >     - - `<mensaje @cerrarMensaje="aviso = false" v-show="aviso" :propiedad="contenido" :otraPropiedad="cabecera"></mensaje>`
 >     - Así al pinchar en el botón de cerrar emite el evento `cerrarMensaje` que cambia el valor de la variable `aviso` que es la mantiene la ventana abierta o cerrada.
+> - Incluyo registro de usuarios con token, si el usuario no se registra o loguea no podrá acceder a las vistas del formulario ni del listado de reservas. Para el cual nos servimos de Vuex, localStorage y `jwt-simple`. Las rutas las protegemos con `router.beforeEach`.
+> - También se incluye encriptado de la contraseña con `bcrypt`.
 
 
 
@@ -38,7 +40,7 @@ npm run build
 ## Crear servidor de Node
 
 ``` bash
-# Ir al directorio /NodeServer
+# Ir al directorio /NodeServer arranca servidor en localhost:8081
 npm install
 npm run start
 ```

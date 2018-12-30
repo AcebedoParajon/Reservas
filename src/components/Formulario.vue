@@ -1,6 +1,12 @@
 <template>
   <div>
-    <mensaje @cerrarMensaje="aviso = false" v-show="aviso" :contenido="contenido" :cabecera="cabecera" :estiloError="estiloError" ></mensaje>
+    <mensaje
+      @cerrarMensaje="aviso = false"
+      v-show="aviso"
+      :contenido="contenido"
+      :cabecera="cabecera"
+      :estiloError="estiloError"
+    ></mensaje>
     <div class="col m12">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
@@ -72,17 +78,16 @@
   </div>
 </template>
 <script>
-import babelPolyfill from "babel-polyfill"
-import axios from "axios"
-import PostsService from "../services/PostsService"
-import compruebaCampos from "../assets/js/compruebaCampos"
-import mensaje from './Mensajes.vue'
+import babelPolyfill from "babel-polyfill";
+import axios from "axios";
+import PostsService from "../services/PostsService";
+import compruebaCampos from "../assets/js/compruebaCampos";
+import mensaje from "./Mensajes.vue";
 
 export default {
-  components: {mensaje},
+  components: { mensaje },
   data() {
     return {
-      //modalInstance: null,
       nombre: "",
       email: "",
       telefono: "",
@@ -99,7 +104,6 @@ export default {
   },
 
   methods: {
-
     notify() {
       this.$popup({ message: "Enviando datos...", delay: 10 });
     },

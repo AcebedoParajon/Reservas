@@ -2,33 +2,44 @@
   <div class="container">
     <h1 class="center-align">Reservas</h1>
     <div class="center-align">
-      <router-link to='/' class="btn">Acceder al formulario de reservas</router-link>
-      <router-link to='api' class="btn">Acceder al listado de reservas</router-link>
+      <router-link to="/" class="btn">Formulario de reservas</router-link>
+      <router-link to="listado" class="btn">Listado de reservas</router-link>
+      <span v-if="isLoggedIn">
+        <a href="#" @click="logout" class="btn">Logout</a>
+      </span>
+      <span v-else>
+        <router-link to="/login" class="btn">Login</router-link>
+      </span>
+      <router-link to="signup" class="btn">Registrarse</router-link>
     </div>
     <hr>
-      <div class="row">
-        <!-- <formulario></formulario>
-        <listado></listado> -->
-        
-        <router-view></router-view>
-      </div>
+    <div>
+      <!-- <formulario></formulario>
+      <listado></listado>-->
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import formulario from '../src/components/Formulario.vue'
-import listado from '../src/components/Listado.vue'
+
 
 export default {
-  components:{formulario, listado},
-  data () {
-    return {
-      
+
+  computed: {
+    isLoggedIn: function() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    logout: function() {
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("/login");
+      });
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

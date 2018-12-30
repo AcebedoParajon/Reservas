@@ -22,5 +22,13 @@ export default {
 
   fetchError(){
     return Api().post('posts/error',params)
+  },
+
+  addUser(params){
+    return Api().post('posts/signup',params)
+  },
+
+  login(params){
+    return Api().post('posts/login',params)
   }
 }
