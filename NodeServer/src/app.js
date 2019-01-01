@@ -3,12 +3,9 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const mysql = require('mysql')
-const session = require('express-session')
-const MySQLStore = require('express-mysql-session')
 const db = require('./conectadb')
 const Token = require('./authService')
 const helpers = require('./helpers')
-const { MYSQL_PARAMS } = require('./config')
 
 const app = express()
 
