@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
       next()
       return
     }
-    next('/login')
+    next('/forbidden')
   } else {
     next()
   }

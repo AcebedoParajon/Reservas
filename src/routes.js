@@ -2,6 +2,7 @@ import Formulario from './components/Formulario.vue'
 import Listado from './components/Listado.vue'
 import Login from './components/Login.vue'
 import Signup from './components/Signup.vue'
+import Forbidden from './components/forbidden.vue'
 
 export const routes = [
     { path: '*', redirect: '/login' },
@@ -14,5 +15,6 @@ export const routes = [
         requiresAuth: true
       } },
     { path: '/login', name: 'Login', component: Login },
-    { path: '/signup', name: 'Signup', component: Signup }
+    { path: '/signup', name: 'Signup', component: Signup },
+    { path: '/forbidden', name: 'Forbidden', component: Forbidden }
 ]
