@@ -82,6 +82,7 @@ import babelPolyfill from "babel-polyfill";
 import axios from "axios";
 import PostsService from "../services/PostsService";
 import compruebaCampos from "../assets/js/compruebaCampos";
+import pascua from "../assets/js/pascua";
 import mensaje from "./Mensajes.vue";
 
 export default {
@@ -94,6 +95,7 @@ export default {
       f_entrada: "",
       f_salida: "",
       personas: "",
+      temporada: "",
       aviso: false,
       cabecera: "",
       contenido: "",
@@ -147,7 +149,7 @@ export default {
         return;
       } else {
         // Si los campos son válidos ejecutamos la función que comprueba las fechas de la reserva
-        this.compruebaReserva();
+        this.compruebaTemporada();
       }
     },
 
@@ -161,6 +163,44 @@ export default {
       this.mensaje();
     },
 
+    compruebaTemporada() {
+      var fecha = new Date(this.f_entrada);
+      var f_pascua = pascua(fecha.getFullYear());
+
+      // Temporada alta verano
+      if (fecha.getDate() >= 15 && fecha.getMonth() + 1 >= 7) {
+        if (fecha.getMonth() + 1 == 9 && fecha.getDate() > 15) {
+          this.temporada = "BAJA";
+        } else {
+          this.temporada = "ALTA";
+        }
+      };
+
+      // Temporada media
+      if (fecha.getMonth() + 1 >= 5 && fecha.getMonth() + 1 <= 6) {
+        this.temporada = "MEDIA";
+      };
+      if (fecha.getMonth() + 1 == 7 && fecha.getDate() < 15) {
+        this.temporada = "MEDIA";
+      };
+
+      // Temporada alta navidades
+      if (fecha.getMonth() + 1 == 12 && fecha.getDate() > 24) {
+        this.temporada = "ALTA";
+      };
+      if (fecha.getMonth() + 1 == 1 && fecha.getDate() < 6) {
+        this.temporada = "ALTA";
+      } else {
+        this.temporada = "BAJA";
+      };
+
+      // Semana Santa
+      if (fecha >= f_pascua.lunes_pascua && fecha < f_pascua.domingo_pascua) {
+        this.temporada = "ALTA";
+      };
+      this.compruebaReserva();
+    },
+
     // Enviamos los datos via post sólo si pasa todos los filtros de errores
     async addReserva() {
       await PostsService.addReservas({
@@ -169,7 +209,8 @@ export default {
         telefono: this.telefono,
         f_entrada: this.f_entrada,
         f_salida: this.f_salida,
-        personas: this.personas
+        personas: this.personas,
+        temporada: this.temporada
       });
 
       this.nombre = "";
@@ -178,6 +219,7 @@ export default {
       this.f_entrada = "";
       this.f_salida = "";
       this.personas = "";
+      this.temporada = "";
       setTimeout(this.iraPagina, 2000);
     },
 

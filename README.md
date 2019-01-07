@@ -4,6 +4,13 @@
 > Un MEVN PERO CON Mysql en lugar de Mongodb.<br>
 > Formulario para realizar reserva de fechas y su comprobación y envío a la base de datos.<br>
 > La aplicación primero comprueba que todos los campos a enviar son correctos y, de ser así, después comprueba que las fechas no están ya reservadas. En el caso de que todo sea correcto guarda los datos en la base de datos.<br>
+> En la base de datos tenemos tres tablas:<br>
+> - `diasreserva`, donde guardamos todos los datos de la reserva.
+> - `temporada`, donde guardamos los precios de las temporadas alta, media y baja.
+> - `users`, donde guardamos los usuarios de la aplicación.<br>
+>
+> La aplicación también comprueba la temporada de la reserva, suponiendo que aquí, en el norte, la temporada alta es del 15 de julio al 15 de septiembre, navidades y Semana Santa; la temporada media es mayo, junio y hasta el 15 de julio; el resto temporada baja. Dependiendo de la temporada calcula el precio por los dias de estancia.<br>
+>
 > Trabajamos con:<br>
 > - Expresiones regulares para comprobar la valided de los campos.
 > - En VueJs con single components, estilos css dinámicos, bucles v-for para listar las reservas, axios.

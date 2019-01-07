@@ -11,6 +11,8 @@
             <th>Fecha de entrada</th>
             <th>Fecha de salida</th>
             <th>Nº de personas</th>
+            <th> Temporada </th>
+            <th>Precio</th>
           </thead>
           <tr v-for="data in all_data ">
             <td>{{data.nombre}}</td>
@@ -19,6 +21,8 @@
             <td>{{data.f_entrada}}</td>
             <td>{{data.f_salida}}</td>
             <td>{{data.personas}}</td>
+            <td>{{data.temporada}}</td>
+            <td>{{data.precio}}</td>
           </tr>
         </table>
       </div>
