@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-import babelPolyfill from "babel-polyfill";
+// import babelPolyfill from "babel-polyfill";
 import axios from "axios";
 import PostsService from "../services/PostsService";
 import compruebaCampos from "../assets/js/compruebaCampos";
@@ -117,7 +117,7 @@ export default {
         .then(response => {
           this.contenido = response.data.message;
           this.cabecera = response.data.success;
-          if (this.cabecera != "Enviando reserva") this.estiloError = true;
+          if (this.cabecera != true) this.estiloError = true;
           this.aviso = true;
           // Si el success de logError.json es false, es que no existió error y continuamos con la reserva
           if (this.cabecera === "Enviando reserva") {

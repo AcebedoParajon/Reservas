@@ -1,29 +1,37 @@
 <template>
-  <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>{{cabecera}}</h4>
-      <p>{{mensaje}}</p>
+  <div id="modal1" class="card red lighten-1">
+    <div class="card-content white-text">
+      <h4>Atención</h4>
+      <h6>¿Realmente desea eliminar este registro?</h6>
     </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+    <div class="card-action">
+      <a @click="cerrarModal" class="btn blue accent-1">Cancelar</a>
+      <a @click="eliminarRegistro" class="btn red accent-1">Aceptar</a>
     </div>
   </div>
 </template>
 <script>
-//var instance = M.Modal.getInstance('.modal');
+
 export default {
-  data() {
-    return {
-        cabecera:'',
-        mensaje:''
-    };
+
+  data(){
+    return{
+      eliminarUsu: false,
+    }   
+  },
+  methods:{
+    cerrarModal(){
+      this.$emit('cerrarModal');
+    },
+    eliminarRegistro(){
+      this.$emit('eliminarRegistro');
+    }
   }
 };
 </script>
 <style>
 
-.modal2 {
-  display: none;
+#modal1 {
   position: fixed;
   left: 0;
   right: 0;
@@ -34,7 +42,10 @@ export default {
   margin: auto;
   overflow-y: auto;
   border-radius: 2px;
-  will-change: top, opacity; }
-  .modal:focus {
-    outline: none; }
+  will-change: top, opacity; 
+  z-index: 9999;
+}
+.modal:focus {
+  outline: none; 
+}
 </style>
